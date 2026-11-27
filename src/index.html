@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kiwwa</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="libs/katex/katex.min.css">
+    <link rel="icon" type="image/png" href="assets/kiwi_dev_early.png" />
+</head>
+<body>
+    <div class="layout">
+        <aside class="leftPanel" id="sidebar">
+            <button onclick="new_chat()" title="start new chat">+ <span>new chat</span></button>
+            <button square class="collapseButton" onclick="toggle_sidebar()" title="toggle sidebar">◧</button>
+            <div class="chatList" id="chatList">
+            </div>
+            <button onclick="toggle_servers()" title="manage servers">🌐︎ <span>servers</span></button>
+            <button square onclick="toggle_info()" title="about kiwwa">🛈</button>
+        </aside>
+        <main class="workArea">
+            <header class="controlPanel">
+                <div class="selectorsGroup">
+                    <select id="serverSelect" aria-label="select server">
+                        <option value="nothing">no servers found</option>
+                    </select>
+                    <p>/</p>
+                    <select id="modelSelect" aria-label="select model">
+                        <option value="nothing">no models found</option>
+                    </select>
+                </div>
+                <button id="themeBtn" square onclick="toggle_theme()" aria-label="change theme">☀</button>
+            </header>
+            <div class="chatWindow">
+                <div class="messagesList" id="messages"></div>
+                <div class="inputArea">
+                    <button disabled square class="attachButton" onclick="attach_file()" title="attachments (not implemented yet)">+</button>
+                    <textarea id="chatInput" rows="1" placeholder="enter text..."></textarea>
+                    <button square class="sendButton" onclick="send_message()" title="send prompt">➤</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div class="sidebarBackdrop" id="sidebarBackdrop" onclick="toggle_sidebar()"></div>
+    <dialog id="serversDialog" class="modalDialog">
+    <div class="modalHeader">
+        <h3>Servers</h3>
+        <button square onclick="close_dialogs()">✕</button>
+    </div>
+    <div class="modalBody">
+        <div class="serversList" id="serversList">
+            <div class="serverItem">
+                <div>
+                    <strong>local</strong>
+                <div class="serverUrl">http://localhost:11434/v1</div>
+            </div>
+            <button square title="delete server">🗑</button>
+        </div>
+    </div>
+        <hr class="modalDivider">
+        <form class="serverForm" onsubmit="save_server(event)">
+            <label>
+                <span>name</span>
+                <input type="text" id="srvName" autocomplete="off" required>
+            </label>
+            <label>
+                <span>base URL</span>
+                <input type="url" id="srvUrl" autocomplete="off" required>
+            </label>
+            <label>
+                <span>API key / token</span>
+                <input type="password" id="srvKey" autocomplete="off">
+            </label>
+            <label>
+                <span>parameters (JSON)</span>
+                <textarea id="srvParams" rows="3" autocomplete="off"></textarea>
+            </label>
+            <button type="submit" class="primaryBtn">+ Add Server</button>
+        </form>
+    </div>
+</dialog>
+<dialog id="infoDialog" class="modalDialog">
+    <div class="modalHeader">
+        <h3>about</h3>
+        <button square onclick="close_dialogs()">✕</button>
+    </div>
+    <div class="modalBody">
+        <div class="modalBody aboutSimple">
+            <p>Simple local-first web client for OpenAI-compatible AI APIs.</p>
+            <div class="aboutMeta">
+                <span>License: Polyform Noncommercial</span>
+                <a href="https://github.com/imhuntsman59/kiwwa" target="_blank" rel="noopener">GitHub ↗</a>
+                </div>
+        </div>
+    </div>
+</dialog>
+</body>
+<script src="app.js"></script>
+<script src="libs/katex/katex.min.js"></script>
+<script src="libs/katex/contrib/auto-render.min.js"></script>
+<script src="libs/dompurify/dist/purify.min.js"></script>
+<script src="libs/marked/lib/marked.umd.js"></script>

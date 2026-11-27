@@ -1,0 +1,600 @@
+:root {
+    --bgMain: #e2eff2;        
+    --UIbackground: #f8fcfd;     
+    --UIhover: #d2ecf3;        
+    --UIactive: #bce1ec;  
+    --textUI: #0d2630;          
+    --textMuted: #52707c;    
+    --accent: #0284c7;        
+    --UIborder: rgba(13, 38, 48, 0.12);
+    --UIshadow: 0 4px 14px rgba(13, 38, 48, 0.07);
+}
+
+[data-theme="dark"] {
+    --bgMain: #101315;          
+    --UIbackground: #181c1f;      
+    --UIhover: #2b3338;        
+    --UIactive: #353f45;    
+    --textUI: #e6eff2;       
+    --textMuted: #82969e;      
+    --accent: #38bdf8;     
+    --UIborder: rgba(230, 239, 242, 0.09);
+    --UIshadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+
+body {
+    margin: 0;
+    background-color: var(--bgMain);
+    overflow: hidden;
+    padding: 0;
+}
+.layout {
+    display: flex;
+    height: 100dvh;
+    padding: 8px;
+    gap: 8px;
+    box-sizing: border-box;
+}
+
+/* SIDEBAR  */
+.sidebarBackdrop {
+    display: none;
+}
+.leftPanel {
+    display: grid;
+    grid-template-columns: 1fr auto; 
+    grid-template-rows: auto 1fr auto; 
+    gap: 8px;
+    height: 100%;
+    width: 260px;
+    padding: 12px;
+    box-sizing: border-box;
+    background-color: var(--UIbackground);
+    border-radius: 8px;
+    transition: width 0.25s ease, padding 0.25s ease; 
+    flex-shrink: 0;
+    box-shadow: var(--UIshadow);
+}
+.chatList {
+    grid-column: 1 / -1; 
+    overflow-y: auto; 
+}
+.chatList p {
+    color: var(--textUI);
+    text-align: left;
+    font-size: 14px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.chatItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 8px;
+    border-radius: 4px;
+    gap: 6px;
+    cursor: pointer;
+}
+.chatItem:hover {
+    background-color: var(--UIhover);
+}
+.chatItem.active {
+    background-color: var(--UIactive);
+}
+.chatRenameInput {
+    flex: 1;
+    min-width: 0;
+    height: 24px;
+    padding: 0 6px;
+    border-radius: 4px;
+    border: 1px solid var(--UIactive);
+    background-color: var(--bgMain);
+    color: var(--textUI);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+/* CHAT TITLE */
+.chatTitle {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    color: var(--textUI);
+    font-size: 14px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.chatActions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+}
+.chatActions button {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    color: var(--textUI);
+    cursor: pointer;
+}
+.chatActions button:hover {
+    background-color: var(--UIhover);
+}
+/* SIDEBAR INNER */
+.leftPanel > button {
+    background: none;
+    border-radius: 4px;
+    color: var(--textUI);
+    border: none;
+    text-align: left;
+    font-size: 14px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.leftPanel button:hover {
+    background-color: var(--UIhover)
+}
+.leftPanel button:active {
+    background-color: var(--UIactive)
+}
+.leftPanel button[square] {
+    aspect-ratio: 1 / 1;
+}
+
+/* SIDEBAR STATES */
+.leftPanel.collapsed button[square] {
+    grid-column: 1;
+    grid-row: 1;
+}
+.leftPanel.collapsed .chatList,
+.leftPanel.collapsed button span {
+    display: none;
+}
+
+.leftPanel.collapsed > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    background-color: var(--UIbackground);
+    border-radius: 4px;
+    color: var(--textUI);
+    border: none;
+    font-size: 14px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    cursor: pointer;
+}
+.leftPanel.collapsed > button:hover {
+    background-color: var(--UIhover);
+}
+.leftPanel.collapsed > button:active {
+    background-color: var(--UIactive);
+}
+.leftPanel.collapsed {
+    width: 40px; 
+    padding: 12px 8px;
+    grid-template-columns: 24px; 
+}
+.leftPanel.collapsed > button:nth-of-type(2) { grid-row: 1; }
+.leftPanel.collapsed > button:nth-of-type(1) { grid-row: 2; }
+.leftPanel.collapsed > button:nth-of-type(3) { grid-row: 4; }
+.leftPanel.collapsed > button:nth-of-type(4) { grid-row: 5; }
+
+/* WORK AREA */
+.workArea {
+    flex: 1; 
+    min-width: 0;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr; 
+    box-sizing: border-box;
+    box-shadow: var(--UIshadow);
+}
+.controlPanel {
+    min-height: 48px;
+    background-color: var(--UIbackground);
+    border-radius: 8px 8px 0 0;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--UIborder);
+}
+.chatWindow {
+    min-height: 0;
+    background-color: var(--UIbackground);
+    border-radius: 0 0 8px 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+/* CONTROL PANEL INNER */
+.selectorsGroup {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap; 
+    padding: 0;
+}
+.controlPanel select {
+    height: 32px;
+    padding: 0 28px 0 10px; 
+    border-radius: 4px;
+    border: none;
+    background-color: transparent; 
+    color: var(--textUI);
+    font-size: 14px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    cursor: pointer;
+    outline: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://w3.org' viewBox='0 0 24 24' fill='none' stroke='%230f2933' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+}
+.controlPanel p {
+    height: 100%;
+    font-size: 18px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    text-align: center;
+    color: var(--textMuted);
+}
+.controlPanel select:hover {
+    background-color: var(--UIhover);
+}
+.controlPanel select:focus {
+    border-color: var(--UIactive);
+}
+.controlPanel button {
+    background: none;
+    border-radius: 4px;
+    color: var(--textUI);
+    border: none;
+    text-align: left;
+    font-size: 14px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.controlPanel button:hover {
+    background-color: var(--UIhover)
+}
+.controlPanel button:active {
+    background-color: var(--UIactive)
+}
+.controlPanel button[square] {
+    aspect-ratio: 1 / 1;
+}
+/* CHAT WINDOW */
+.chatWindow {
+    min-height: 0;
+    background-color: var(--UIbackground);
+    border-radius: 0 0 8px 8px;
+    box-shadow: var(--UIshadow);
+    display: grid;
+    grid-template-rows: 1fr auto;
+    overflow: hidden;
+}
+/* INNER CHAT WINDOW */
+.messagesList {
+    min-height: 0;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.inputArea {
+    padding: 12px 16px;
+    display: flex;
+    align-items: flex-end; 
+    gap: 8px;
+    border-top: 1px solid var(--UIborder); 
+}
+.inputArea textarea {
+    flex: 1;
+    min-height: 36px;
+    max-height: 150px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--UIborder); 
+    background-color: transparent;
+    color: var(--textUI);
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.4;
+    resize: none; 
+    outline: none;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.inputArea textarea:focus {
+    border-color: var(--UIactive);
+}
+.inputArea button[square] {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    border: none;
+    background-color: transparent;
+    color: var(--textUI);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 0.2s ease;
+}
+.inputArea button[square]:hover {
+    background-color: var(--UIhover);
+}
+
+
+/* MODALS */
+.modalDialog {
+    width: min(460px, calc(100vw - 24px));
+    max-height: 85dvh;
+    padding: 0;
+    border: 1px solid var(--UIborder);
+    border-radius: 8px;
+    background-color: var(--UIbackground);
+    color: var(--textUI);
+    box-shadow: var(--UIshadow);
+    overflow: hidden;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}
+.modalDialog[open] {
+    display: flex;
+    flex-direction: column;
+    animation: modalFadeIn 0.2s ease;
+}
+.modalDialog::backdrop {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.97) translateY(-6px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modalHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--UIborder);
+}
+.modalHeader h3 {
+    margin: 0;
+    font-size: 16px;
+}
+.modalHeader button[square] {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    border: none;
+    background-color: transparent;
+    color: var(--textUI);
+    cursor: pointer;
+}
+.modalHeader button[square]:hover {
+    background-color: var(--UIhover);
+}
+.modalBody {
+    padding: 8px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* SERVERS LIST */
+.serversList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.serverItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background-color: var(--UIbackground);
+    border: 1px solid var(--UIborder);
+    font-size: 13px;
+}
+.serverUrl {
+    font-size: 11px;
+    opacity: 0.65;
+    margin-top: 2px;
+}
+.serverItem button[square] {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--textUI);
+    cursor: pointer;
+}
+.serverItem button[square]:hover {
+    background-color: var(--UIhover);
+}
+.modalDivider {
+    border: none;
+    border-top: 1px solid var(--UIborder);
+    margin: 4px 0;
+}
+
+/* SERVERS */
+.serverForm {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.serverForm label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.serverForm input,
+.serverForm textarea {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid var(--UIborder);
+    background-color: var(--UIbackground);
+    color: var(--textUI);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+}
+.serverForm textarea {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    resize: vertical;
+}
+.serverForm input:focus,
+.serverForm textarea:focus {
+    border-color: var(--UIactive);
+}
+.primaryBtn {
+    margin-top: 4px;
+    height: 32px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--UIbackground);
+    color: var(--textUI);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+.primaryBtn:hover {
+    background-color: var(--UIhover);
+}
+.primaryBtn:active {
+    background-color: var(--UIactive);
+}
+
+/* CHAT */
+.messagesList {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.message {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.message.user {
+    align-self: flex-end;
+    background: var(--UIactive);
+    color: var(--textUI);
+    white-space: pre-wrap;
+}
+.message.assistant {
+    align-self: flex-start;
+    background: var(--UIbackground);
+    color: var(--textUI);
+    border: 1px solid var(--UIborder);
+}
+.message.assistant p { margin: 0 0 8px; }
+.message.assistant p:last-child { margin: 0; }
+.message.assistant pre {
+    background: var(--bgMain);
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+.message.assistant code {
+    font-family: monospace;
+    font-size: 14px;
+}
+/* ABOUT */
+.aboutSimple p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--textUI);
+}
+.aboutMeta {
+    padding-top: 8px;
+    border-top: 1px solid var(--UIborder);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    opacity: 0.8;
+}
+.aboutMeta a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+.aboutMeta a:hover {
+    text-decoration: underline;
+}
+
+
+/* @MEDIA  */
+@media (max-width: 768px) {
+    .leftPanel:not(.collapsed) {
+        position: fixed;
+        top: 8px;
+        left: 8px;
+        bottom: 8px;
+        height: calc(100dvh - 16px);
+        z-index: 1000;
+        box-shadow: var(--UIshadow);
+    }
+    .leftPanel:not(.collapsed) ~ .sidebarBackdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        z-index: 999; 
+    }
+}
+
+@media (max-width: 768px) {
+    .leftPanel:not(.collapsed) {
+        position: fixed;
+        top: 8px;
+        left: 8px;
+        bottom: 8px;
+        height: calc(100dvh - 16px);
+        z-index: 1000;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+    .layout:has(.leftPanel:not(.collapsed)) {
+        padding-left: 56px; 
+    }
+    body:has(.leftPanel:not(.collapsed)) .sidebarBackdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        z-index: 999;
+    }
+}
+
